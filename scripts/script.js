@@ -1,6 +1,7 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
+let isGameOver = false;
 const bird = new Bird(50, canvas.height / 2, 30, 50);
 const pillars = [];
 pillars.push(new Pillar(canvas.width, canvas.height));
@@ -13,11 +14,13 @@ document.addEventListener('keydown', (e) => {
 
 function update(deltaTime) {
 	bird.update(deltaTime);
+	isGameOver = bird.y > canvas.height;
 
 	pillars.forEach((pillar) => {
 		pillar.update(deltaTime);
-		if(pillar.isCollidingWith(bird)) {
-			console.log('collide');
+
+		if(pillar.isCollidingWith(bird)){
+			isGameOver = true;
 		}
 	});
 
@@ -45,6 +48,13 @@ function draw() {
 	// draw the bird
 	ctx.fillStyle = 'brown';
 	ctx.fillRect(bird.x, bird.y, bird.w, bird.h);
+
+	// draw game over state
+	if(isGameOver) {
+		ctx.fillStyle = 'red';
+		ctx.font = '100px serif';
+		ctx.fillText('Game Over', 70, 230);
+	}
 }
 
 let previousTime = performance.now();
@@ -57,7 +67,9 @@ function gameLoop(now = performance.now()) {
 	update(deltaTime);
 	draw();
 
-	requestAnimationFrame(gameLoop);
+	if(!isGameOver) {
+		requestAnimationFrame(gameLoop);
+	}
 }
 
 // Start
