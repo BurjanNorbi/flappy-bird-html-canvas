@@ -3,6 +3,12 @@ const ctx = canvas.getContext('2d');
 
 const bird = new Bird(50, canvas.height / 2, 30, 50);
 
+document.addEventListener('keydown', (e) => {
+	if(e.code === 'Space') {
+		bird.onJump();
+	}
+})
+
 function update(deltaTime) {
 	bird.update(deltaTime);
 }

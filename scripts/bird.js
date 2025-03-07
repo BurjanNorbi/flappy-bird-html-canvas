@@ -12,4 +12,8 @@ class Bird {
 		this.vy += this.ay * deltaTime;
 		this.y += this.vy * deltaTime;
 	}
+
+	onJump() {
+		this.vy = -200;
+	}
 }
