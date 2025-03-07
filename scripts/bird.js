@@ -5,11 +5,11 @@ class Bird {
 		this.w = w;
 		this.h = h;
 		this.vy = 0;
-		this.ay = 5;
+		this.ay = 250;
 	}
 
 	update(deltaTime) {
 		this.vy += this.ay * deltaTime;
-		this.y += this.vy;
+		this.y += this.vy * deltaTime;
 	}
 }
