@@ -1,3 +1,12 @@
+const images = {
+	background: new Image(),
+	bird: new Image(),
+	pillar: new Image()
+};
+images.background.src = './images/bg.png';
+images.bird.src = './images/bird.png';
+images.pillar.src = './images/pillar.png';
+
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -35,19 +44,23 @@ function update(deltaTime) {
 
 function draw() {
 	// draw the backgound
-	ctx.fillStyle = 'blue';
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	// ctx.fillStyle = 'blue';
+	// ctx.fillRect(0, 0, canvas.width, canvas.height);
+	ctx.drawImage(images.background, 0, 0, canvas.width, canvas.height);
 
 	// draw the pillars
 	ctx.fillStyle = 'white';
 	pillars.forEach((pillar) => {
-		ctx.fillRect(pillar.x, pillar.upperY, pillar.w, pillar.upperH);
-		ctx.fillRect(pillar.x, pillar.lowerY, pillar.w, pillar.lowerH);
+		// ctx.fillRect(pillar.x, pillar.upperY, pillar.w, pillar.upperH);
+		ctx.drawImage(images.pillar, pillar.x, pillar.upperY, pillar.w, pillar.upperH);
+		// ctx.fillRect(pillar.x, pillar.lowerY, pillar.w, pillar.lowerH);
+		ctx.drawImage(images.pillar, pillar.x, pillar.lowerY, pillar.w, pillar.lowerH);
 	});
 	
 	// draw the bird
-	ctx.fillStyle = 'brown';
-	ctx.fillRect(bird.x, bird.y, bird.w, bird.h);
+	// ctx.fillStyle = 'brown';
+	// ctx.fillRect(bird.x, bird.y, bird.w, bird.h);
+	ctx.drawImage(images.bird, bird.x, bird.y, bird.w, bird.h);
 
 	// draw game over state
 	if(isGameOver) {
