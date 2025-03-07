@@ -16,7 +16,18 @@ function update(deltaTime) {
 
 	pillars.forEach((pillar) => {
 		pillar.update(deltaTime);
+		if(pillar.isCollidingWith(bird)) {
+			console.log('collide');
+		}
 	});
+
+	for(let i = pillars.length - 1; i >= 0; --i) {
+		const pillar = pillars[i];
+		if(pillar.isOffScreen()) {
+			pillars.pop();
+			pillars.push(new Pillar(canvas.width, canvas.height));
+		}
+	}
 }
 
 function draw() {

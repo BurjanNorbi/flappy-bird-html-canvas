@@ -10,7 +10,7 @@ class Pillar {
 	constructor(canvasW, canvasH) {
 		const h = random(10, canvasH / 2);
 
-		this.x = canvasW - 30;
+		this.x = canvasW;
 		this.upperY = 0;
 		this.lowerY = h + GAP;
 		this.w = 30;
@@ -19,6 +19,29 @@ class Pillar {
 	}
 
 	update(deltaTime) {
-		this.x += PILLAR_XSPEED * deltaTime;
+		this.x += PILLAR_XSPEED * deltaTime; 
+	}
+
+	isOffScreen() {
+		return this.x + this.w < 0;
+	}
+
+	isCollidingWith(bird) {
+		const colliding = (a, b) => {
+			return !(
+					b.y + b.h  < a.y ||
+					a.x + a.w < b.x ||
+					a.y + a.h  < b.y ||
+					b.x + b.w < a.x
+			);
+		}
+
+		return colliding(
+			{x: bird.x, y: bird.y, w: bird.w, h: bird.h}, 
+			{x: this.x, y: this.upperY, w: bird.w, h: this.upperH}
+		) || colliding(
+			{x: bird.x, y: bird.y, w: this.w, h: bird.h}, 
+			{x: this.x, y: this.lowerY, w: this.w, h: this.lowerH}
+		);
 	}
 }
