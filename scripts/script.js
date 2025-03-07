@@ -2,6 +2,8 @@ const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
 const bird = new Bird(50, canvas.height / 2, 30, 50);
+const pillars = [];
+pillars.push(new Pillar(canvas.width, canvas.height));
 
 document.addEventListener('keydown', (e) => {
 	if(e.code === 'Space') {
@@ -17,6 +19,13 @@ function draw() {
 	// draw the backgound
 	ctx.fillStyle = 'blue';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	// draw the pillars
+	ctx.fillStyle = 'white';
+	pillars.forEach((pillar) => {
+		ctx.fillRect(pillar.x, pillar.upperY, pillar.w, pillar.upperH);
+		ctx.fillRect(pillar.x, pillar.lowerY, pillar.w, pillar.lowerH);
+	});
 	
 	// draw the bird
 	ctx.fillStyle = 'brown';
