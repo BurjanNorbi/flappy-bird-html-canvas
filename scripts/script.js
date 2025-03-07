@@ -13,6 +13,10 @@ document.addEventListener('keydown', (e) => {
 
 function update(deltaTime) {
 	bird.update(deltaTime);
+
+	pillars.forEach((pillar) => {
+		pillar.update(deltaTime);
+	});
 }
 
 function draw() {

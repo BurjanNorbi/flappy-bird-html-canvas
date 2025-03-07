@@ -17,4 +17,8 @@ class Pillar {
 		this.upperH = h;
 		this.lowerH = canvasH - GAP - h;
 	}
+
+	update(deltaTime) {
+		this.x += PILLAR_XSPEED * deltaTime;
+	}
 }
