@@ -11,6 +11,7 @@ const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
 let isGameOver = false;
+let points = 0;
 const bird = new Bird(50, canvas.height / 2, 30, 50);
 const pillars = [];
 pillars.push(new Pillar(canvas.width, canvas.height));
@@ -37,6 +38,7 @@ function update(deltaTime) {
 		const pillar = pillars[i];
 		if(pillar.isOffScreen()) {
 			pillars.pop();
+			++points;
 			pillars.push(new Pillar(canvas.width, canvas.height));
 		}
 	}
@@ -61,6 +63,11 @@ function draw() {
 	// ctx.fillStyle = 'brown';
 	// ctx.fillRect(bird.x, bird.y, bird.w, bird.h);
 	ctx.drawImage(images.bird, bird.x, bird.y, bird.w, bird.h);
+
+	// draw the points
+	ctx.fillStyle = 'red';
+	ctx.font = '50px serif';
+	ctx.fillText(`${points}`, 280, 50);
 
 	// draw game over state
 	if(isGameOver) {
