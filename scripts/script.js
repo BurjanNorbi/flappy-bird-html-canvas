@@ -10,6 +10,8 @@ images.pillar.src = './images/pillar.png';
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
+let isFirstGame = true;
+let isGameRunning = true;
 let isGameOver = false;
 let points = 0;
 const bird = new Bird(50, canvas.height / 2, 30, 50);
@@ -18,7 +20,11 @@ pillars.push(new Pillar(canvas.width, canvas.height));
 
 document.addEventListener('keydown', (e) => {
 	if(e.code === 'Space') {
-		bird.onJump();
+		if(!isGameRunning) {
+			isGameRunning = true;
+		} else {
+			bird.onJump();
+		}
 	}
 })
 
@@ -58,16 +64,27 @@ function draw() {
 	// draw the bird
 	ctx.drawImage(images.bird, bird.x, bird.y, bird.w, bird.h);
 
+	ctx.textAlign ='center';
+	ctx.textBaseline = 'middle';
+
 	// draw the points
 	ctx.fillStyle = 'red';
 	ctx.font = '50px serif';
-	ctx.fillText(`${points}`, 280, 50);
+	ctx.fillText(`${points}`, canvas.width / 2, 50);
 
 	// draw game over state
-	if(isGameOver) {
+	if(isGameOver && !isFirstGame) {
 		ctx.fillStyle = 'red';
 		ctx.font = '100px serif';
-		ctx.fillText('Game Over', 70, 230);
+		ctx.fillText('Game over', canvas.width / 2, canvas.height / 2);
+	} else if(isFirstGame) {
+		ctx.fillStyle = 'red';
+		ctx.font = '50px serif';
+		ctx.fillText('Flappy Bird', canvas.width / 2, canvas.height / 2);
+		ctx.font = '25px serif';
+		ctx.fillText('Press SPACE to play...', canvas.width / 2, canvas.height / 2 + 40);
+		isGameRunning = false;
+		isFirstGame = false;
 	}
 }
 
@@ -78,13 +95,21 @@ function gameLoop(now = performance.now()) {
 	const deltaTime = (now - previousTime) / 1000;
 	previousTime = now;
 
-	update(deltaTime);
-	draw();
-
-	if(!isGameOver) {
-		requestAnimationFrame(gameLoop);
+	if(isGameRunning && !isGameOver) {
+		update(deltaTime);
+		draw();
 	}
+
+	requestAnimationFrame(gameLoop);
 }
 
 // Start
-gameLoop();
+let imagesLoaded = 0;
+Object.values(images).forEach((img) => {
+    img.onload = () => {
+        imagesLoaded++;
+        if (imagesLoaded === Object.keys(images).length) {
+            gameLoop();  // Start the game only after images are loaded
+        }
+    };
+});
