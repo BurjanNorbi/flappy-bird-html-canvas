@@ -14,16 +14,21 @@ let isFirstGame = true;
 let gameModel = new GameModel();
 
 document.addEventListener('keydown', (e) => {
-	if(e.code === 'Space') {
-		if(gameModel.isGameOver) {
-			gameModel.startNewGame();
-		}
-		else if(!gameModel.isGameRunning) {
-			gameModel.resumeGame();
-			isFirstGame = false;
-		} else {
-			gameModel.onJump();
-		}
+	switch (e.code) {
+		case 'Space':
+			if(gameModel.isGameOver) {
+				gameModel.startNewGame();
+			}
+			else if(!gameModel.isGameRunning) {
+				gameModel.resumeGame();
+				isFirstGame = false;
+			} else {
+				gameModel.onJump();
+			}
+			break;
+		case 'Escape':
+			gameModel.pauseGame();
+			break;
 	}
 })
 
@@ -64,16 +69,8 @@ function draw() {
 	ctx.font = '50px serif';
 	ctx.fillText(`${gameModel.points}`, canvas.width / 2, 50);
 
-	if(gameModel.isGameOver || isFirstGame) {
-
-		if(gameModel.isGameOver && !isFirstGame) {
-			// draw game over text
-			ctx.textAlign ='center';
-			ctx.textBaseline = 'middle';
-			ctx.fillStyle = 'red';
-			ctx.font = '100px serif';
-			ctx.fillText('Game over', canvas.width / 2, canvas.height / 2);
-		} else if(isFirstGame) {
+	if(gameModel.isGameOver || !gameModel.isGameRunning || isFirstGame) {
+		if(isFirstGame) {
 			// draw game title on start text
 			ctx.textAlign ='center';
 			ctx.textBaseline = 'middle';
@@ -82,6 +79,20 @@ function draw() {
 			ctx.fillText('Flappy Bird', canvas.width / 2, canvas.height / 2);
 
 			gameModel.pauseGame();
+		} else if(gameModel.isGameOver) {
+			// draw game over text
+			ctx.textAlign ='center';
+			ctx.textBaseline = 'middle';
+			ctx.fillStyle = 'red';
+			ctx.font = '100px serif';
+			ctx.fillText('Game over', canvas.width / 2, canvas.height / 2);
+		} else if(!gameModel.isGameRunning) {
+			// draw game paused text
+			ctx.textAlign ='center';
+			ctx.textBaseline = 'middle';
+			ctx.fillStyle = 'red';
+			ctx.font = '100px serif';
+			ctx.fillText('Paused', canvas.width / 2, canvas.height / 2);
 		}
 
 		// draw user info text
