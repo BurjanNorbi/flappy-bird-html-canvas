@@ -7,7 +7,7 @@ function random(a, b) {
 }
 
 class Pillar {
-	constructor(canvasW, canvasH) {
+	constructor(canvasW = canvas.width, canvasH = canvas.height) {
 		const h = random(10, canvasH / 2);
 
 		this.x = canvasW;
