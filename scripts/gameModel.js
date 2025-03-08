@@ -19,7 +19,19 @@ class GameModel {
 		this.isGameOver = false;
 	}
 
+	pauseGame() {
+		this.isGameRunning = false;
+	}
+
+	resumeGame() {
+		this.isGameRunning = true;
+	}
+
 	update(deltaTime) {
+		if(!this.isGameRunning || this.isGameOver) {
+			return;
+		}
+
 		this.bird.update(deltaTime);
 		this.isGameOver = this.bird.y > canvas.height;
 
@@ -42,6 +54,9 @@ class GameModel {
 	}
 
 	onJump() {
+		if(!this.isGameRunning || this.isGameOver) {
+			return;
+		}
 		this.bird.onJump();
 	}
 }
